@@ -6,18 +6,22 @@ def call() {
         stages {
             stage('Build') {
                 steps {
-                    script {
-                        echo 'Building...'
-                        sh "echo Running Maven Build"
-                        sh "ls  -lrtha"
-                        sh "chmod 777 mvnw"
-                        sh "./mvnw clean install"
-                        sh "ls  -lrtha ./target"
-                    }
+                    mavenbuild()
+                      
                 }
             }
         }
     }
 }
 
+def mavenbuild(){
+    script {
+        echo 'Building...'
+        sh "echo Running Maven Build"
+        sh "ls  -lrtha"
+        sh "chmod 777 mvnw"
+        sh "./mvnw clean install"
+        sh "ls  -lrtha ./target"
+    }
+}
 
