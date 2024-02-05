@@ -3,14 +3,14 @@ def call() {
         agent any
          
         tools {
-            jdk "AWSCorretto-21"
-            maven "Maven-3.9.6"
+            jdk 'AWSCorretto-21'
+            maven 'Maven-3.9.6'
         }
 
-        environment {
-            JDK_TOOL = 'AWSCorretto-21'
-            //MAVEN_VERSION = '3.9.6' 
-        }
+        // environment {
+        //     JDK_TOOL = 'AWSCorretto-21'
+        //     //MAVEN_VERSION = '3.9.6' 
+        // }
 
 
         
