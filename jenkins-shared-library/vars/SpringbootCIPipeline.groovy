@@ -1,7 +1,19 @@
 def call() {
     pipeline {
-        // Ensure that 'agent any' is specified correctly
         agent any
+         
+        environment {
+            JDK_VERSION = '21'
+            MAVEN_VERSION = '3.9.6' 
+        }
+
+        tools {
+            jdk "OpenJDK_${JDK_VERSION}"
+            maven "Maven-${MAVEN_VERSION}"
+        }
+
+
+        
 
         stages {
             stage('Build') {
@@ -18,10 +30,11 @@ def mavenbuild(){
     script {
         echo 'Building...'
         sh "echo Running Maven Build"
-        sh "ls  -lrtha"
-        sh "chmod 777 mvnw"
-        sh "./mvnw clean install"
-        sh "ls  -lrtha ./target"
+        sh "java -version"
+        sh "mvn -version"
+        // sh "chmod 777 mvnw"
+        // sh "mvnw clean install"
+        // sh "ls  -lrtha ./target"
     }
 }
 
