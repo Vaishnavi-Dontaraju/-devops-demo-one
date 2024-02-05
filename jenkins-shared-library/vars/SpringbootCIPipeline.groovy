@@ -15,29 +15,19 @@ def call() {
         stages {
             stage('Maven Build') {
                 steps {
-                    
-
-                
-                    configFileProvider([configFile(fileId: '24ed4219-1ebb-4416-9f64-420f25a144e4', targetLocation: "${env.WORKSPACE}/.m2/settings.xml")]) {
-                        echo "Copied settings.xml to ${env.WORKSPACE}/.m2/settings.xml"
-                    }
                     mavenbuild()
-                      
                 }
             }
-            stage('Upload to Nexus Artifactory'){
-                steps{
-
-                }
-            }
-            
+                       
         }
     }
 }
 
 def mavenbuild(){
     script {
-        
+        configFileProvider([configFile(fileId: '24ed4219-1ebb-4416-9f64-420f25a144e4', targetLocation: "${env.WORKSPACE}/.m2/settings.xml")]) {
+            echo "Copied settings.xml to ${env.WORKSPACE}/.m2/settings.xml"
+        }
         echo 'Building...'
         sh "echo Running Maven Build"
         sh "java -version"
