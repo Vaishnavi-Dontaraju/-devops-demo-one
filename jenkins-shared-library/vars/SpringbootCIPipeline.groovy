@@ -2,14 +2,14 @@ def call() {
     pipeline {
         agent any
          
-        environment {
-            JDK_VERSION = '21'
-            MAVEN_VERSION = '3.9.6' 
-        }
+        // environment {
+        //     JDK_VERSION = '21'
+        //     MAVEN_VERSION = '3.9.6' 
+        // }
 
         tools {
-            jdk "OpenJDK-${JDK_VERSION}"
-            maven "Maven-${MAVEN_VERSION}"
+            jdk "AWSCorretto-21"
+            maven "Maven-3.9.6"
         }
 
 
