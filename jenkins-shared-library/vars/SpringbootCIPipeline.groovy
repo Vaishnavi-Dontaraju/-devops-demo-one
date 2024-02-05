@@ -32,9 +32,8 @@ def mavenbuild(){
         sh "echo Running Maven Build"
         sh "java -version"
         sh "mvn -version"
-        // sh "chmod 777 mvnw"
-        // sh "mvnw clean install"
-        // sh "ls  -lrtha ./target"
+        sh "mvnw clean install"
+        sh "ls  -lrtha ./target"
     }
 }
 
