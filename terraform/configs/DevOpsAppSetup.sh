@@ -45,3 +45,10 @@ docker run -d -p 80:80 --restart unless-stopped \
 -v nginx:/etc/nginx \
 --net devops-network \
 sriramponangi/cicd-apps-reverse-proxy:latest
+
+# to-do
+# Update terraform script to download jdk and paste in jenkins home docker volume
+# curl -Lo /tmp/corretto-21.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.tar.gz
+
+# tar -xzvf /tmp/corretto-21.tar.gz -C $(docker volume inspect --format '{{ .Mountpoint }}' jenkins)
+# rm -f /tmp/corretto-21.tar.gz
