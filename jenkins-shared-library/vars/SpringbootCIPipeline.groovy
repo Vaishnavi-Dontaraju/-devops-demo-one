@@ -8,7 +8,7 @@ def call() {
         }
 
         tools {
-            jdk "OpenJDK_${JDK_VERSION}"
+            jdk "OpenJDK-${JDK_VERSION}"
             maven "Maven-${MAVEN_VERSION}"
         }
 
