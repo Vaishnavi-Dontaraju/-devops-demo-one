@@ -32,7 +32,7 @@ def mavenbuild(){
         sh "echo Running Maven Build"
         sh "java -version"
         sh "mvn -version"
-        sh "mvnw clean install"
+        sh "mvn clean install"
         sh "ls  -lrtha ./target"
     }
 }
