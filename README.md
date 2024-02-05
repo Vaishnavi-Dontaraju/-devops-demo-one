@@ -190,4 +190,13 @@
 
 
 Need to run this in jenkins container:
-ssh-keyscan github.com >> ~/.ssh/known_hosts# devops-demo-one
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+ssh-keyscan corretto.aws >> ~/.ssh/known_hosts
+
+## Jenkins JDK installation commands
+curl -Lo /tmp/corretto-21.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.tar.gz
+tar -xzvf /tmp/corretto-21.tar.gz -C /var/jenkins_home
+rm /tmp/corretto-21.tar.gz
+
+/var/jenkins_home/amazon-corretto-21.0.2.13.1-linux-x64
