@@ -32,7 +32,8 @@ def mavenbuild(){
         sh "echo Running Maven Build"
         sh "java -version"
         sh "mvn -version"
-        sh "mvn -s ${env.WORKSPACE}/.m2/settings.xml clean install"
+        sh "echo env.WORKSPACE=${env.WORKSPACE}"
+        sh "mvn -s ${env.WORKSPACE}/.m2/settings.xml -Dmaven.repo.local=${env.WORKSPACE}/.m2/repository clean install"
         sh "ls  -lrtha ./target"
     }
 }
