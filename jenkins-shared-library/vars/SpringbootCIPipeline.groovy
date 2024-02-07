@@ -34,7 +34,7 @@ def mavenbuild(){
         sh "mvn -version"
         sh "echo env.WORKSPACE=${env.WORKSPACE}"
         sh "cat ${env.WORKSPACE}/.m2/settings.xml"
-        sh "mvn -s ${env.WORKSPACE}/.m2/settings.xml -Dmaven.repo.local=${env.WORKSPACE}/.m2/repository clean install"
+        sh "mvn -s ${env.WORKSPACE}/.m2/settings.xml -Dmaven.repo.local=${env.WORKSPACE}/.m2/repository clean install -Pcustom-relative-path"
         sh "ls  -lrtha ./target"
     }
 }
