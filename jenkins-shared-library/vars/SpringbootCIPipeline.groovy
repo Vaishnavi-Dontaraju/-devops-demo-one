@@ -11,7 +11,7 @@ def call() {
             NEXUS_VERSION = "nexus3"
             NEXUS_PROTOCOL = "http"
             NEXUS_URL = "nexus:8081"
-            NEXUS_REPOSITORY = "maven-snapshots"
+            NEXUS_REPOSITORY = "cicd-demo-mixed"
             NEXUS_CREDENTIAL_ID = "NexusRepo"
             
         }
