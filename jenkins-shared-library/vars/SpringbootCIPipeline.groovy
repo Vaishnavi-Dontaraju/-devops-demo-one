@@ -37,8 +37,10 @@ def call() {
                         
                         artifactVersion="${pom.version}"
                         if(artifactVersion.toUpperCase().contains("SNAPSHOT")) {
+                            echo "Uploading artifact to Snapshot repository"
                             NEXUS_REPOSITORY = NEXUS_SNAPSHOT_REPOSITORY
                         } else {
+                            echo "Uploading artifact to Release repository"
                             NEXUS_REPOSITORY = NEXUS_RELEASE_REPOSITORY
                         }
 
