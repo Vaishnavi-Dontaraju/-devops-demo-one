@@ -11,7 +11,8 @@ def call() {
             NEXUS_VERSION = "nexus3"
             NEXUS_PROTOCOL = "http"
             NEXUS_URL = "nexus:8081"
-            NEXUS_REPOSITORY = "cicd-demo-mixed"
+            NEXUS_RELEASE_REPOSITORY = "maven-releases"
+            NEXUS_SNAPSHOT_REPOSITORY = "maven-snapshots"
             NEXUS_CREDENTIAL_ID = "NexusRepo"
             
         }
@@ -32,7 +33,15 @@ def call() {
                     artifactPath = filesByGlob[0].path;
                     artifactExists = fileExists artifactPath;
                     if(artifactExists) {
-                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                        echo "*** \n File: ${artifactPath},\n group: ${pom.groupId},\n packaging: ${pom.packaging},\n version ${pom.version}";
+                        
+                        artifactVersion="${pom.version}"
+                        if(artifactVersion.toUpperCase().contains("SNAPSHOT")) {
+                            NEXUS_REPOSITORY = NEXUS_SNAPSHOT_REPOSITORY
+                        } else {
+                            NEXUS_REPOSITORY = NEXUS_RELEASE_REPOSITORY
+                        }
+
                         nexusArtifactUploader(
                             nexusVersion: NEXUS_VERSION,
                             protocol: NEXUS_PROTOCOL,
