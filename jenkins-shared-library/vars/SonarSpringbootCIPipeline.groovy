@@ -28,7 +28,7 @@ def call() {
                 steps {
                     script {
                         withSonarQubeEnv(credentialsId: 'Sonar-token') {
-                            sh 'mvn sonar:sonar '
+                            sh 'mvn sonar:sonar'
                         }
                         /*retry(3){
                             waitForQualityGate abortPipeline: true
@@ -41,7 +41,7 @@ def call() {
                 }
             }
             
-            /*stage("Publish to Nexus Repository Manager") {
+            stage("Publish to Nexus Repository Manager") {
             steps {
                 script {
                     pom = readMavenPom file: "pom.xml";
@@ -86,7 +86,7 @@ def call() {
                     }
                 }
 
-            }*/
+            }
             
 
                        
