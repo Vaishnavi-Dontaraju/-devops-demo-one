@@ -10,7 +10,7 @@ def call() {
         environment {
             NEXUS_VERSION = "nexus3"
             NEXUS_PROTOCOL = "http"
-            NEXUS_URL = "nexus:8081"
+            NEXUS_URL = "nginx/app/nexus"
             NEXUS_RELEASE_REPOSITORY = "maven-releases"
             NEXUS_SNAPSHOT_REPOSITORY = "maven-snapshots"
             NEXUS_CREDENTIAL_ID = "NexusRepo"
