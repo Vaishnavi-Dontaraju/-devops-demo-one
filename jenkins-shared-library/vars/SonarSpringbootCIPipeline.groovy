@@ -99,6 +99,7 @@ def call() {
                     to: 'vaishu.dontaraju@gmail.com',
                 )
             }
+            sh 'echo Email sent'
         }
     }
 }
