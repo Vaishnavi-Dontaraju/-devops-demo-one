@@ -219,3 +219,6 @@ sonarqube:
 admin
 Admin@123
 sqa_5702a21d0c2ba09b815cccf079b8615c70cf4ced
+
+gmail:
+app password: nqmo dksb vlgr birj

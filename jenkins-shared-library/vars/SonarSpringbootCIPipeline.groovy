@@ -94,8 +94,9 @@ def call() {
         post {
             always {
                 emailext (
-                    subject: "Your build ${currentBuild.result}",
-                    body: "Check the build at: ${env.BUILD_URL}\n\nBuild Status: ${currentBuild.result}",
+                    attachLog: true,
+                    //subject: "Your build ${currentBuild.result}",
+                    //body: "Check the build at: ${env.BUILD_URL}\n\nBuild Status: ${currentBuild.result}",
                     to: 'vaishu.dontaraju@gmail.com'
                 )
             }
