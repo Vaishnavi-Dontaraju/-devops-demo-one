@@ -96,7 +96,7 @@ def call() {
                 emailext (
                     subject: "Your build ${currentBuild.result}",
                     body: "Check the build at: ${env.BUILD_URL}\n\nBuild Status: ${currentBuild.result}",
-                    to: 'vaishu.dontaraju@gmail.com',
+                    to: 'vaishu.dontaraju@gmail.com'
                 )
             }
             
