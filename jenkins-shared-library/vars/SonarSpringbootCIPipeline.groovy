@@ -95,7 +95,7 @@ def call() {
             always {
                 emailext (
                     attachLog: true,
-                    subject: "Project ${env.PROJECT_NAME} Build ${currentBuild.number}: ${currentBuild.result}",
+                    subject: "Project ${env.JOB_NAME} Build ${currentBuild.number}: ${currentBuild.result}",
                     body: "Git branch: ${env.GIT_BRANCH}\nCheck the build at: ${env.BUILD_URL}\nBuild Status: ${currentBuild.result}",
                     to: 'vaishu.dontaraju@gmail.com'
                 )
