@@ -13,7 +13,9 @@
 - Run `terraform show` to verify the details of the created EC2 instance.
 <add screenshot * 2>
 - After the public ip address of the created EC2 instance is noted, run below command to login to instance.
-    `$ ssh -i <PEM_FILE_PATH> ec2-user@ec2-ip-address-dns-name-here `
+   ```
+      $ ssh -i <PEM_FILE_PATH> ec2-user@ec2-ip-address-dns-name-here 
+   ```
 - Finally, run `sudo docker ps -a` to verify the list of docker containers running currently.
 <add screenshot>
 
