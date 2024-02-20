@@ -11,6 +11,8 @@
 - Run `terraform init` command to initialize a working directory to download the necessary provider plugins and modules.
 - Run `terraform plan` to view the execution plan carried out by Terraform to create the resources. 
 - Run `terraform apply` to execute the actions proposed in a Terraform plan to create or update infrastructure.
+   ![Terraform Apply Output](https://github.com/Vaishnavi-Dontaraju/devops-demo-one/blob/main/notes/1_terraform_apply.PNG)
+
 - Run `terraform show` to verify the details of the created EC2 instance.
 <add screenshot * 2>
 - After the public ip address of the created EC2 instance is noted, run below command to login to instance.
