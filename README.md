@@ -1,193 +1,128 @@
-# Setup EC2 Instance
+## Source code Repositories
+- https://github.com/Vaishnavi-Dontaraju/springboot-demo-ms-one
+- https://github.com/Vaishnavi-Dontaraju/springboot-demo-ms-two
 
-- Login into remote AWS server using the ssh command:
-    ```shell
-    $ ssh -i <PEM_FILE_PATH> ec2-user@ec2-ip-address-dns-name-here
-    ```
-- Apply pending updates using the yum command:
-    ```shell
-    $ sudo yum update
-    ```
-- Search for Docker package:
-    ```shell
-    $ sudo yum search docker
-    ```
-- Get version information:
-    ```shell
-    $ sudo yum info docker
-    ```
-- Install docker:
-    ```shell
-    $ sudo yum install docker
-    ```
-- Install docker-compose:
-    ```shell
-    $ wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) 
-    
-    $ sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/local/bin/docker-compose
-    
-    $ sudo chmod -v +x /usr/local/bin/docker-compose
-    ```
-- Start docker on VM bootup:
-    ```shell
-    $ sudo systemctl status docker.service
+## Infrastructure Setup 
+### Description
+- Create an EC2 Instance and security group configs on AWS using Terraform by providing details such as region, ami, instance_type, volume_size and a shell script for user_data attribute in `main.tf`.
+- The shell script that is provided in user_data attribute (DevOpsAppSetup.sh) contains installation commands for docker engine, and ensures the containers of jenkins, nexus, sonarqube and nginx are running whenever the EC2 instance is started.
+<DevopsAppSetup file link>
+### Execution steps
+- Run `terraform init` command to initialize a working directory to download the necessary provider plugins and modules.
+- Run `terraform plan` to view the execution plan carried out by Terraform to create the resources. 
+- Run `terraform apply` to execute the actions proposed in a Terraform plan to create or update infrastructure.
+- Run `terraform show` to verify the details of the created EC2 instance.
+<add screenshot * 2>
+- After the public ip address of the created EC2 instance is noted, run below command to login to instance.
+   ```
+      $ ssh -i <PEM_FILE_PATH> ec2-user@ec2-ip-address-dns-name-here 
+   ```
+- Finally, run `sudo docker ps -a` to verify the list of docker containers running currently.
+<add screenshot>
 
-    $ sudo systemctl enable docker.service
+## Setup Nginx as Reverse Proxy 
+write about config and docker file
 
-    $ sudo systemctl start docker.service
+## Nexus Setup 
+- Use a URL like http://ec2-public-ip/app/nexus to access Nexus via nginx reverse proxy.
+- Get initial Nexus admin user's password by running below command in EC2 instance.
     ```
-- Verify Installed docker and docker-compose:
-    ```shell
-    docker version
-
-    docker-compose version
+    docker exec nexus bash -c "cat /nexus-data/admin.password"
     ```
-- **References:**
-    - > https://www.cyberciti.biz/faq/how-to-install-docker-on-amazon-linux-2/
----
-# Setup DevOps Applications
+- Create the following hosted repositories to store:
+   - **snapshot** artifacts
+   - **release** artifacts
+- Create the following proxy repository to download dependencies from:
+    - **maven-central**
+- Create the following group repository which includes both hosted and proxy repositories:
+   - **maven-public**
+<add screenshot>
 
-### Approach-1: With Simple Docker Commands:
-- Create network to connect applications:
-    ```shell
-    $ docker network create devops-network
+## Sonarqube Setup
+- Use a URL like http://ec2-public-ip/app/sonarqube to access Sonarqube with below default credentials to login.
     ```
+    Default User: admin
+    Default Password: admin
+    ```
+- Generate a new token at **User > My Account > Security**
+   - Under **Generate Tokens**, enter Name, select Type as **Global Analysis Token** and set Expires in to **no expiration**. Click on Generate Token.
+   - Store the token to configure it later as part of Sonarqube tool setup in Jenkins.
+   <add screenshot>
+- Create a webhook by navigating to the home page **Administration > Configurations > Webhooks**
+   - 
+   - Click on **Create** and provide name, URL in below format and provide secret text. Store the secret text to use it in Jenkins and click on **Create**
+     `** https://${jenkins_domain}/sonarqube-webhook/ **`
+   
+   <add screenshot>
 
-- **Jenkins CI/CD Server Setup**
+## Jenkins Setup
+- Login to jenkins url http://ec2-public-ip/app/jenkins with initial jenkins admin user's password by running below command in EC2 instance 
+    ```
+    sudo docker exec jenkins bash -c "cat /var/jenkins_home/secrets/initialAdminPassword"
+    ```
+### Install Required Plugins
+- Maven Integration 
+- Pipeline Maven Integration 
+- Pipeline Utility Steps
+- Nexus Artifact Uploader 
+- SonarQube Scanner for Jenkins 
 
-    ```shell
-        # Start jenkins container
-        $ docker run -d --name jenkins \
-            --net devops-network \
-            --env JENKINS_OPTS="--prefix=/app/jenkins" \
-            -v jenkins:/var/jenkins_home jenkins/jenkins:lts-jdk17
-        # [Alternative]
-        # Start jenkins container by exposing ports directly
-        # $ docker run -d -p 8080:8080 -p 50000:50000 --name jenkins \
-        #    --net devops-network \
-        #    --env JENKINS_OPTS="--prefix=/app/jenkins" \
-        #    -v jenkins:/var/jenkins_home jenkins/jenkins:lts-jdk17
+### Sonarqube and Shared Library Setup 
+   - Navigate to **Manage Jenkins > Select System under System Configuration**
+   - In SonarQube servers section, click on Add SonarQube and provide Name, Server URL
+       - For server authentication token, select on +Add drop down and Select Kind as Secret text and provide secret text in Secret field. Enter id and description. Click on Add to submit the details.
+       - Now select the created id from drop down as Server authentication token.
+       - Next, click on Advanced and click on +Add under Webhook Secret to add webhook details created earlier in sonarqube. Select Kind as Secret text and provide secret text in Secret field. Enter webhook id and description. Click on Add to submit the details.
+       - Now select the created webhook id under in Webhook Secret.
+   - In Global Pipeline Libraries section, click on Add and provide Name.
+       - Select Modern SCM as Retrieval Method and Git as Source Code Management.
+       - Paste the git repository url in Project Repository field and click on +Add to add the credentials of git.Select Kind as username and password and enter the details. Provide id, description and click on Add. Now select the created credentials from drop down.
+   - Finally, Click on Apply to save the configuration.
         
-        # Get Initial jenkins admin user's password
-        $ docker exec jenkins bash -c "cat /var/jenkins_home/secrets/initialAdminPassword"
-        # [Alternative]
-        # SSH to the container and run the cat command
-        # $ docker exec -it jenkins /bin/bash
-        # jenkins@5fee21dbdb74:/$ cat /var/jenkins_home/secrets/initialAdminPassword
+<add screenshots*3>
 
-    ```
-    -   Use a URL like http://ip-address/app/jenkins to access Jenkins via nginx reverse proxy (follow nginx setup instructions below). If port 8080 is exposed you can alternavitvely access the Jenkins directry by mentioning the port number like http://ip-address:8080/app/jenkins.
-    
+### Maven Setup
+   - Navigate to **Manage Jenkins > Select Managed Files under System Configuration**
+   - Click on Add a new Config, select Maven settings.xml and click Next.
+   - Provide Name and click on Add below Server Credentials to provide nexus server id and add nexus credentials.
+   - Write maven settings.xml as follows so that the project can pull its dependencies from private nexus artifactory.
+   <settings.xml file link>
+<add screenshots>
 
-- **Sonatype Nexus Artifactory Setup**
+### Tools Configuration
+   - Navigate to **Manage Jenkins > Select Tools under System Configuration** 
+      - Under Maven Configuration section, select Provided settings.xml from Default settings provider drop down menu. Under Provided Settings drop down menu select the managed file name created in Maven Setup step..
+      - Go to JDK installations section and click on Add. Provide the name and the file path of installed jdk. 
+      - In SonarQube Scanner installations section, click on Add SonarQube Scanner and provide name and check Install automatically. The sonarqube version is selected by default from drop down menu.
+      - Next, go to Maven installations section and click on Add Maven. Provide name and check Install automatically. The maven version is selected by default from drop down menu.
+      - Finally, click on Apply to submit the details.
+<add screenshots*3>
 
-    ```shell
-        # Start Nexus container
-        $ docker run -d -p 8081:8081 \
-            --name nexus \
-            --net devops-network \
-            -v nexus-data:/nexus-data \
-            --env NEXUS_CONTEXT="app/nexus" \
-            sonatype/nexus3
+### Email notification setup
+   - To configure email notifications post build, navigate to **Manage Jenkins > Select System under System Configuration**  
+   - Under Extended E-mail Notification section, provide SMTP server, SMTP port and click on Advanced. Click on Add and enter your gmail credentials. Select the credentials and check Use SSL.
+   - Similarly, update the same details in Email Notification section and check Use SMTP Authentication and provide gmail credentials.
+   - Click on Apply to save the configuration.
+<add screenshots*3>
 
-        # Get Initial Nexus admin user's password
-        # $ docker exec nexus bash -c "cat /nexus-data/admin.password"
-        # [Alternative]
-        # SSH to the container and run the cat command
-        # $ docker exec -it nexus /bin/bash
-        # nexus@5fee21dbdb74:/$ cat /nexus-data/admin.password
-    ```
-
-    - Use a URL like http://ip-address/app/nexus to access Nexus via nginx reverse proxy (follow nginx setup instructions below). If port 8081 is exposed you can alternavitvely access the Jenkins directry by mentioning the port number like http://ip-address:8081/app/nexus.
-
-    - Credentials:
-        - **Default User**: admin
-        - **Default Password**: <Add file path here...> (**Sample Updated Password**: Admin@123)
-
-
-
-- **SonarQube Code Analyzer Setup**
-    ```shell
-    # Start SonarQube container
-    $ docker run -d \
-        -p 9000:9000 \
-        -v sonarqube_data:/opt/sonarqube/data \
-        -v sonarqube_extensions:/opt/sonarqube/extensions \
-        -v sonarqube_logs:/opt/sonarqube/logs \
-        --net devops-network \
-        --env SONAR_WEB_CONTEXT="/app/sonarqube" \
-        --name sonarqube \
-        sonarqube:10.3.0-community
-    ```
-
-    - Use a URL like http://ip-address:9000 to access JFrog directry by mentioning the port number (if port 9000 is exposed).
-
-    - Credentials:
-        - **Default User**: admin
-        - **Default Password**: admin (**Sample Updated Password**: Admin@123)
-
-    - **References:**
-        - > https://stackoverflow.com/questions/38817344/how-to-persist-configuration-analytics-across-container-invocations-in-sonarqu 
-
-- **Nginx Reverse Proxy Setup**
-    ```shell
-    # Start nginx container
-    $ docker run -d -p 80:80 \
-        -v nginx:/etc/nginx --net devops-network \
-        --name nginx  nginx:1.25.3
-
-    # NOTE: updated default.conf is uploaded to the current repository
-    # Copy nginx reverse proxy configuration to container
-    $ docker cp ./nginx/default.conf  nginx:/etc/nginx/conf.d/default.conf
-    # [Alternative]
-    # Inspect the nginx volume and edit the nginx/conf.d/default.conf file directly on host
-    # $ docker volume inspect nginx 
-    # Assuming the "Mountpoint": "/var/lib/docker/volumes/nginx/_data"
-    # $ cp ./default.conf  /var/lib/docker/volumes/nginx/_data/conf.d/default.conf
-
-    # Verify the syntax of nginx configs
-    $ docker exec nginx bash -c "nginx -t"
-    # NOTE: Get the final applied nginx config file
-    # $ docker exec nginx bash -c "nginx -T" > final-nginx.conf
-
-    # Reload new nginx configurations
-    $ docker exec nginx bash -c "nginx -s reload"
-    # [Alternative]
-    # Restart the container
-    # $ docker container restart nginx
-    ```
-
-# Monitor EC2 Instance Resource Utiluzation
-- To check RAM utilization:
-    ```shell
-    $ free -h
-    ```
-- To check CPU Usage:
-    ```shell
-    $ top -bn2 | grep '%Cpu' | tail -1 | grep -P '(....|...) id,'|awk '{print "CPU Usage: " 100-$8 "%"}'
-    ```
-
-- To check average CPU Load:
-    ```shell
-    # The uptime command gives us a view of the CPU load average at 1, 5, and 15 minutes interval
-    $ uptime
-    # Sample Output:
-    # 12:40:05 up  2:29,  1 user,  load average: 0.37, 0.08, 0.03
-
-    # Interpreting load average can’t be done without knowing the number of cores of a system:
-    $ cat /proc/cpuinfo |grep core
-    # Sample Output:
-    # core id		: 0
-    # cpu cores	    : 1
-    ```
-
-- > **NOTE**:
-  > - **CPU load** is defined as the number of processes using or waiting to use one core at a single point in time.
-  > -  **CPU usage** is the percentage of time a CPU takes to process non-idle tasks. CPU Usage can only be measured over a specified interval of time. We can determine the CPU usage by taking the percentage of time spent idling and subtracting it from 100. 
-  > - **Reference:** https://www.baeldung.com/linux/get-cpu-usage
+### Create a Pipeline 
+   - Click on + New Item on jenkins home page, select Pipeline, provide pipeline name and click on OK.
+   - In configuration page, check on Poll SCM and schedule it as ` * * * * * `
+   - In Pipeline section, select Pipeline script from SCM from Definition drop down and provide git repository url in which maven build is present and select git credentials. Click on Apply.
+   - Build the pipeline script and check the build status.
+   - The jar file created is stored in maven-snapshots repository in Nexus and sonarqube report is generated. The email is being sent to user mentioning the build status and log file.
+<add screenshots*5>
+   - Similarly, follow the same steps to create pipeline for another project and build it.
+<add screenshots>
+   - Build logs of pipelines are below:
+<build log links>
+ 
 
 
 
 
-Need to run this in jenkins container:
-ssh-keyscan github.com >> ~/.ssh/known_hosts# devops-demo-one
+
+
+
+
+

@@ -1,7 +1,7 @@
 ```shell
-docker build --progress plain -t sriramponangi/cicd-apps-reverse-proxy:latest .
+docker build --progress plain -t vaishnavidontaraju/cicd-apps-reverse-proxy:latest .
 ```
 
 ```shell
-docker push sriramponangi/cicd-apps-reverse-proxy:latest
+docker push vaishnavidontaraju/cicd-apps-reverse-proxy:latest
 ```

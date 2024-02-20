@@ -44,4 +44,11 @@ docker run -d -p 80:80 --restart unless-stopped \
 --name nginx  \
 -v nginx:/etc/nginx \
 --net devops-network \
-sriramponangi/cicd-apps-reverse-proxy:latest
+vaishnavidontaraju/cicd-apps-reverse-proxy:latest
+
+
+# JDK installation
+curl -Lo /tmp/corretto-21.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.tar.gz
+
+tar -xzvf /tmp/corretto-21.tar.gz -C $(docker volume inspect --format '{{ .Mountpoint }}' jenkins)
+rm -f /tmp/corretto-21.tar.gz

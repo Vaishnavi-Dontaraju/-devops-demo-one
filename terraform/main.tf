@@ -15,7 +15,7 @@ resource "aws_instance" "example" {
   }
 
   tags = {
-    Name = "demo-cicd-project-1"
+    Name = "devops-demo-cicd-1"
   }
 }
 
