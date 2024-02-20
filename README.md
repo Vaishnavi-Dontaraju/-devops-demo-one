@@ -184,7 +184,7 @@ write about config and docker file
      
       [Pipeline-one build log](https://github.com/Vaishnavi-Dontaraju/devops-demo-one/blob/main/notes/springboot-demo-ms-one-ci_build.log)
 
-      [MPipeline-two build log](https://github.com/Vaishnavi-Dontaraju/devops-demo-one/blob/main/notes/springboot-demo-ms-two-ci_build.log)
+      [Pipeline-two build log](https://github.com/Vaishnavi-Dontaraju/devops-demo-one/blob/main/notes/springboot-demo-ms-two-ci_build.log)
 
 
  
