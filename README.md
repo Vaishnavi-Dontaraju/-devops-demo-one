@@ -98,19 +98,26 @@ write about config and docker file
       - Finally, click on Apply to submit the details.
 <add screenshots*3>
 
-### Create a Pipeline 
-   - Click on + New Item on jenkins home page, select Pipeline, provide pipeline name and click on OK.
-   - In configuration page, check on Poll SCM and schedule it as ` * * * * * `
-   - In Pipeline section, select Pipeline script from SCM from Definition drop down and provide git repository url in which maven build is present and select git credentials. Click on Apply.
-   - Build the pipeline script and check the build status.
-<add screenshots*3>
-
-- ### Email notification setup
+### Email notification setup
    - To configure email notifications post build, navigate to **Manage Jenkins > Select System under System Configuration**  
    - Under Extended E-mail Notification section, provide SMTP server, SMTP port and click on Advanced. Click on Add and enter your gmail credentials. Select the credentials and check Use SSL.
    - Similarly, update the same details in Email Notification section and check Use SMTP Authentication and provide gmail credentials.
    - Click on Apply to save the configuration.
 <add screenshots*3>
+
+### Create a Pipeline 
+   - Click on + New Item on jenkins home page, select Pipeline, provide pipeline name and click on OK.
+   - In configuration page, check on Poll SCM and schedule it as ` * * * * * `
+   - In Pipeline section, select Pipeline script from SCM from Definition drop down and provide git repository url in which maven build is present and select git credentials. Click on Apply.
+   - Build the pipeline script and check the build status.
+   - The jar file created is stored in maven-snapshots repository in Nexus and sonarqube report is generated. The email is being sent to user mentioning the build status and log file.
+<add screenshots*5>
+   - Similarly, follow the same steps to create pipeline for another project and build it.
+<add screenshots>
+   - Build logs of pipelines are below:
+<build log links>
+ 
+
 
 
 

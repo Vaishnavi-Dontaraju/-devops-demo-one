@@ -191,7 +191,6 @@
 
 Need to run this in jenkins container:
 ssh-keyscan github.com >> ~/.ssh/known_hosts
-
 ssh-keyscan corretto.aws >> ~/.ssh/known_hosts
 
 ## Jenkins JDK installation commands
@@ -199,22 +198,10 @@ curl -Lo /tmp/corretto-21.tar.gz https://corretto.aws/downloads/latest/amazon-co
 tar -xzvf /tmp/corretto-21.tar.gz -C /var/jenkins_home
 rm /tmp/corretto-21.tar.gz
 
-/var/jenkins_home/amazon-corretto-21.0.2.13.1-linux-x64
 
 
 
-jenkins:
-admin
-0a0800c3c0114f5fb59300473d1ebe42
 
-nexus:
-admin
-Admin@123
 
-sonarqube:
-admin
-Admin@123
-sonar_token : sqa_5d8e85741e385838d554919c241f28879f44728b
-sonar_webhook : sonarqubesecret
 
 
