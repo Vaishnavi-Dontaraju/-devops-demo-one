@@ -202,14 +202,10 @@ rm /tmp/corretto-21.tar.gz
 /var/jenkins_home/amazon-corretto-21.0.2.13.1-linux-x64
 
 
-to-do
-Update terraform script to download jdk and paste in jenkins home docker volume
-curl -Lo /tmp/corretto-21.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.tar.gz
-tar -xzvf /tmp/corretto-21.tar.gz -C <docker volume /jenkins_home>
 
 jenkins:
 admin
-4cc19e09ea4744f78dfdc7f04f87e63b
+0a0800c3c0114f5fb59300473d1ebe42
 
 nexus:
 admin
@@ -218,5 +214,7 @@ Admin@123
 sonarqube:
 admin
 Admin@123
+sonar_token : sqa_5d8e85741e385838d554919c241f28879f44728b
+sonar_webhook : sonarqubesecret
 
 

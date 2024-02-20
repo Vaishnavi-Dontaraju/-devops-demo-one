@@ -56,7 +56,7 @@ def call() {
 
 def mavenbuild(){
     script {
-        configFileProvider([configFile(fileId: '577861e2-da2e-4881-8cb4-51c6129d2837', targetLocation: "${env.WORKSPACE}/.m2/settings.xml")]) {
+        configFileProvider([configFile(fileId: '6cfed8c1-011d-4578-b5fd-7ad91acd26e7', targetLocation: "${env.WORKSPACE}/.m2/settings.xml")]) {
             echo "Copied settings.xml to ${env.WORKSPACE}/.m2/settings.xml"
         }
         echo 'Building...'
