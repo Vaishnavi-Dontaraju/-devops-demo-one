@@ -34,7 +34,7 @@
 - The three CI/CD applications and Nginx are deployed in their own respective containers, all of them are linked to the same container network called devops-network. Therefore, the nginx container can proxy requests to the three CI/CD applications using the container name as DNS instead of providing an IP and also, the ports of the three CI/CD applications are not exposed to the host machine since all of them are only accessed through Nginx.
 
 - To implement reverse proxy, create a new configuration file as follows.
-  [Nginx Reverse Proxy Confirguration](https://github.com/Vaishnavi-Dontaraju/devops-demo-one/blob/main/nginx/default.conf)
+  [Nginx Reverse Proxy Configuration](https://github.com/Vaishnavi-Dontaraju/devops-demo-one/blob/main/nginx/default.conf)
 
 
 
